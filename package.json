@@ -1,0 +1,180 @@
+{
+	"name": "speed-up-scripting",
+	"displayName": "speed-up-scripting",
+	"description": "Speed up writing automation scripts",
+	"version": "1.0.0",
+	"author": "dylan.z.zhang",
+	"publisher": "dylan.z.zhang",
+	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dylanz666/speed-up-scripting.git"
+	},
+	"engines": {
+		"vscode": "^1.68.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:scripting.initConfiguration",
+		"onCommand:scripting.simplyRenderCase",
+		"onCommand:scripting.inheritFromMostSimilarCase",
+		"onCommand:scripting.getTopSimilarCases",
+		"onCommand:scripting.getAllAutomatedCases",
+		"onCommand:scripting.getNotMarkedAsAutomatedCases",
+		"onCommand:scripting.replaceKeyInfoForCase"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "scripting.initConfiguration",
+				"title": "scripting: Initialize config"
+			},
+			{
+				"command": "scripting.simplyRenderCase",
+				"title": "scripting: Simply render case"
+			},
+			{
+				"command": "scripting.inheritFromMostSimilarCase",
+				"title": "scripting: Inherit most similar case"
+			},
+			{
+				"command": "scripting.getTopSimilarCases",
+				"title": "scripting: Get top similar cases"
+			},
+			{
+				"command": "scripting.getAllAutomatedCases",
+				"title": "scripting: Get all automated cases"
+			},
+			{
+				"command": "scripting.getNotMarkedAsAutomatedCases",
+				"title": "scripting: Get not marked as automated cases"
+			},
+			{
+				"command": "scripting.replaceKeyInfoForCase",
+				"title": "scripting: Replace keyInfo for current case"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "scripting.initConfiguration",
+				"key": "ctrl+0",
+				"mac": "ctrl+cmd+0",
+				"when": "editorFocus"
+			},
+			{
+				"command": "scripting.simplyRenderCase",
+				"key": "ctrl+1",
+				"mac": "ctrl+cmd+1",
+				"when": "editorFocus"
+			},
+			{
+				"command": "scripting.inheritFromMostSimilarCase",
+				"key": "ctrl+2",
+				"mac": "ctrl+cmd+2",
+				"when": "editorFocus"
+			},
+			{
+				"command": "scripting.getTopSimilarCases",
+				"key": "ctrl+3",
+				"mac": "ctrl+cmd+3",
+				"when": "editorFocus"
+			},
+			{
+				"command": "scripting.getAllAutomatedCases",
+				"key": "ctrl+4",
+				"mac": "ctrl+cmd+4",
+				"when": "editorFocus"
+			},
+			{
+				"command": "scripting.getNotMarkedAsAutomatedCases",
+				"key": "ctrl+5",
+				"mac": "ctrl+cmd+5",
+				"when": "editorFocus"
+			},
+			{
+				"command": "scripting.replaceKeyInfoForCase",
+				"key": "ctrl+6",
+				"mac": "ctrl+cmd+6",
+				"when": "editorFocus"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorFocus",
+					"command": "scripting.initConfiguration",
+					"alt": "scripting.initConfiguration",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "scripting.simplyRenderCase",
+					"alt": "scripting.simplyRenderCase",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "scripting.inheritFromMostSimilarCase",
+					"alt": "scripting.inheritFromMostSimilarCase",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "scripting.getTopSimilarCases",
+					"alt": "scripting.getTopSimilarCases",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "scripting.getAllAutomatedCases",
+					"alt": "scripting.getAllAutomatedCases",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "scripting.getNotMarkedAsAutomatedCases",
+					"alt": "scripting.getNotMarkedAsAutomatedCases",
+					"group": "navigation"
+				},
+				{
+					"when": "editorFocus",
+					"command": "scripting.replaceKeyInfoForCase",
+					"alt": "scripting.replaceKeyInfoForCase",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"extension:package": "printf {} > ./configuration.json && vsce package",
+		"extension:install": "code --install-extension ./speed-up-scripting-*.vsix"
+	},
+	"dependencies": {
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "16.x",
+		"@types/string-similarity": "^4.0.0",
+		"string-similarity": "^4.0.4",
+		"@types/vscode": "^1.68.0",
+		"@typescript-eslint/eslint-plugin": "^5.27.0",
+		"@typescript-eslint/parser": "^5.27.0",
+		"@vscode/test-electron": "^2.1.3",
+		"art-template": "^4.13.2",
+		"axios": "^0.27.2",
+		"color": "^4.2.3",
+		"eslint": "^8.16.0",
+		"glob": "^8.0.3",
+		"innertext": "^1.0.3",
+		"mocha": "^10.0.0",
+		"typescript": "^4.7.2"
+	}
+}

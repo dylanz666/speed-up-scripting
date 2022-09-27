@@ -1,0 +1,8 @@
+{
+    name: "{{caseName}}",
+    ids: ["{{caseId}}"],
+    priority: "{{priority}}",
+    keywords: [DATA_SETS.WEBINAR_COMMON{{@keywords}}],
+    maintainers: ["{{automatedBy}}"],
+    docs: ["https://xxx.yyyy.com/test-cases/{{caseId}}"],
+},
