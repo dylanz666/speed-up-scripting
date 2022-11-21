@@ -68,6 +68,9 @@ export class Similarity {
     }
 
     static compareKeyCaseData(caseDataA: any, caseDataB: any) {
+        if (!caseDataA || !caseDataB) {
+            return 0;
+        }
         let stepsAArr = [];
         for (let stepA of caseDataA.children) {
             stepsAArr.push({

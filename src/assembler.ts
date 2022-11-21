@@ -10,26 +10,26 @@ export class Assembler {
     static caseTemplateForReplacingFilePath: string = "../template/caseKeyInfoTemplateForReplacing.txt";
 
     static assembleContentForSimplelyRender(params: { caseData: any }) {
-        const templateData = fs.readFileSync(path.resolve(__dirname, this.caseTemplateFilePath), "utf-8");
+        const templateData = decodeURI(fs.readFileSync(path.resolve(__dirname, this.caseTemplateFilePath), "utf-8"));
         const content = template.render(templateData, {
             caseName: params.caseData.name,
             caseId: params.caseData.caseId,
             priority: params.caseData.priority,
             keywords: params.caseData.keywords,
             automatedBy: params.caseData.automatedBy,
-        });
+        }, { escape: false });
         return content;
     }
 
     static assembleContentForReplacingCaseKeyInfo(params: { caseData: any }) {
-        const templateData = fs.readFileSync(path.resolve(__dirname, this.caseTemplateForReplacingFilePath), "utf-8");
+        const templateData = decodeURI(fs.readFileSync(path.resolve(__dirname, this.caseTemplateForReplacingFilePath), "utf-8"));
         let content = template.render(templateData, {
             caseName: params.caseData.name,
             caseId: params.caseData.caseId,
             priority: params.caseData.priority,
             keywords: params.caseData.keywords,
             automatedBy: params.caseData.automatedBy,
-        });
+        }, { escape: false });
         return content.trim();
     }
 
@@ -39,14 +39,14 @@ export class Assembler {
     }) {
         // assemble new case key info
         const caseKeyInfo = CaseHelper.generateCaseKeyInfo(params.caseData);
-        const templateData = fs.readFileSync(path.resolve(__dirname, this.caseKeyInfoTemplateFilePath), "utf-8");
+        const templateData = decodeURI(fs.readFileSync(path.resolve(__dirname, this.caseKeyInfoTemplateFilePath), "utf-8"));
         const renderredKeyInfoTemplate = template.render(templateData, {
             caseName: caseKeyInfo?.name,
             caseId: caseKeyInfo?.caseId,
             priority: caseKeyInfo?.priority,
             keywords: caseKeyInfo?.keywords,
             automatedBy: caseKeyInfo?.automatedBy,
-        });
+        }, { escape: false });
 
         // get first one of case in target file
         const caseString = fs.readFileSync(params.inherittedFilePath, "utf-8");
@@ -78,7 +78,7 @@ export class Assembler {
         const p2 = params.allCaseIdsAlongWithPriority.filter((item) => {
             return item.priority == "2";
         });
-        let content: string = `// Automated case: ${params.allCaseIdsAlongWithPriority.length}\n`;
+        let content: string = `// Automated cases: ${params.allCaseIdsAlongWithPriority.length}\n`;
         content += `// P0: ${p0.length}, P1: ${p1.length}, P2: ${p2.length}\n\n`;
         for (let caseIdsAlongWithPriority of params.allCaseIdsAlongWithPriority) {
             content += `// ${Configuration.configuration.testItEndpoint}/test-cases/${caseIdsAlongWithPriority.id} : P${caseIdsAlongWithPriority.priority}\n`;

@@ -77,12 +77,19 @@ export async function inheritFromMostSimilarCase() {
                 // let customer decide whether to inherit from most similar case or not
                 vscode.window.showInformationMessage(`Max similarity: ${maxSimilarityInfo.similarity}, Inherit from ${maxSimilarityInfo.caseId}?`,
                     { modal: true }, { title: 'Yes' }).then(async (answer) => {
-                        if (answer?.title != "Yes") {
-                            vscode.window.showInformationMessage("Canceled~");
-                            return;
-                        }
                         const editor = vscode.window.activeTextEditor;
                         assert(editor, "Please focus to the editor!");
+                        if (answer?.title != "Yes") {
+                            const caseId = CaseHelper.getCaseIdFromFile(editor.document.fileName);
+                            assert(!!caseId, "The caseId is not ok, please check current file name!");
+
+                            const caseData = await API.getCaseKeyInfo(caseId);
+                            const content = Assembler.assembleContentForSimplelyRender({ caseData: caseData });
+
+                            const snippet: vscode.SnippetString = new vscode.SnippetString(content);
+                            editor.insertSnippet(snippet);
+                            return;
+                        }
                         const caseString = Assembler.assembleCaseFromInheritedCase({
                             caseData: caseData,
                             inherittedFilePath: maxSimilarityInfo.filePath

@@ -10,9 +10,13 @@ export class CaseHelper {
     }
 
     static getCustomizedKeywords(caseData: any) {
+        const projectItems = caseData.ascendants.filter((item: { type: string; }) => {
+            return item.type == "project";
+        });
+        const projectId: string = projectItems[0].id;
         const preconditions = caseData.preconditions.toLowerCase();
-        const keywordsItems = caseData.values.filter((item: { fieldId: string; }) => {
-            return item.fieldId == this.customizedKeywordsId;
+        const keywordsItems = caseData.values.filter((item: { fieldId: string; projects: string | string[]; }) => {
+            return item.fieldId == this.customizedKeywordsId && item.projects.includes(projectId);
         });
         keywordsItems.reverse();
         let keywords = "";
@@ -45,7 +49,7 @@ export class CaseHelper {
     }
 
     static reformatCaseInfo(caseData: any) {
-        return {
+        return caseData ? {
             caseId: `${caseData.prefix}-${caseData.externalId}`,
             prefix: caseData.prefix,
             externalId: caseData.externalId,
@@ -55,7 +59,8 @@ export class CaseHelper {
             priority: caseData.priority,
             summary: caseData.summary,
             values: caseData.values,
+            ascendants: caseData.ascendants,
             keywords: this.getCustomizedKeywords(caseData)
-        };
+        } : null;
     }
 }

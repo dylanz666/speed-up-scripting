@@ -5,9 +5,13 @@ import { Configuration } from './configuration';
 
 export class API {
     static async getCaseInfo(caseId: string) {
-        const res = await axios.get(`${Configuration.configuration.testItEndpoint}/api/v1/case/${caseId}`, { timeout: 15e3 });
-        assert(res.status == 200, `Fail to get case info with caseId: ${caseId}`);
-        return res.data;
+        try {
+            const res = await axios.get(`${Configuration.configuration.testItEndpoint}/api/v1/case/${caseId}`, { timeout: 15e3 });
+            assert(res.status == 200, `Fail to get case info with caseId: ${caseId}`);
+            return res.data;
+        } catch (e) {
+            return null;
+        }
     }
 
     static async getReformattedCaseInfo(caseId: string) {

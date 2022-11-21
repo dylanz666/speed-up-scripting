@@ -2,7 +2,6 @@ import { Case } from "runtime/api";
 import { config, DATA_SETS } from "runtime/config";
 import { IDataSet, User } from "sut/domain";
 import { Webinar } from "sut/webinar";
-import { Invitee } from "@xxx/xxx/lib/types/xxx/dto";
 
 Case(
     {
@@ -11,7 +10,7 @@ Case(
         priority: "{{priority}}",
         keywords: [DATA_SETS.WEBINAR_COMMON{{@keywords}}],
         maintainers: ["{{automatedBy}}"],
-        docs: ["https://xxx.yyyy.com/test-cases/{{caseId}}"],
+        docs: ["https://testit.ringcentral.com/test-cases/{{caseId}}"],
     },
 
     async c => {
@@ -20,6 +19,7 @@ Case(
         const webinarHostKeywordsForPanelist = c.getWebinarHostKeywords();
         const webinarAudienceKeywords = c.getWebinarAudienceKeywords();
         let dataSet: IDataSet;
+        let admin: User;
         let host: User;
         let cohost: User;
         let panelist: User;
@@ -28,6 +28,7 @@ Case(
 
         await c.step("Given 1 host, 1 cohost, 1 panelist, 1 audience", async s => {
             dataSet = await c.accountPoolManager.take(DATA_SETS.WEBINAR_COMMON);
+            admin = dataSet.getAdmin();
             host = dataSet.nthUser(0);
             cohost = dataSet.nthUser(1);
             panelist = dataSet.nthUser(2);
@@ -38,7 +39,7 @@ Case(
                 panelist: { number: panelist.company.number, ext: panelist.pin },
                 audience: { number: audience.company.number, ext: audience.pin },
             });
-            await c.context.sdk.setWebinarSettingDefaults({ user: host, admin: dataSet.getAdmin() });
+            await c.context.sdk.setWebinarSettingDefaults({ user: host, admin: admin });
         });
 
         await c.step("When the host schedule and go live a webianr", async () => {
@@ -47,6 +48,18 @@ Case(
             await c.context.sdk.startOrJoinWebinar(webinar);
             await c.context.sdk.goLiveWebinar(webinar);
             c.collectWebinar(webinar);
+        });
+
+        await c.step("And the host invite 1 cohost and 1 panelist", async () => {
+            const cohostJoinUri = await c.context.sdk.addInviteeForWebinar(webinar, cohost, "CoHost");
+            webinar.cohostJoinUris = [cohostJoinUri];
+
+            const panelistJoinUri = await c.context.sdk.addInviteeForWebinar(webinar, panelist, "Panelist");
+            webinar.panelistJoinUris = [panelistJoinUri];
+        });
+
+        await c.step("And ", async () => {
+            
         });
 
         await c.step("And ", async () => {
