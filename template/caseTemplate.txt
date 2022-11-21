@@ -10,7 +10,7 @@ Case(
         priority: "{{priority}}",
         keywords: [DATA_SETS.WEBINAR_COMMON{{@keywords}}],
         maintainers: ["{{automatedBy}}"],
-        docs: ["https://testit.ringcentral.com/test-cases/{{caseId}}"],
+        docs: ["https://xxx.yyyy.com/test-cases/{{caseId}}"],
     },
 
     async c => {
